@@ -1,4 +1,4 @@
-# Network Latency & Packet-Loss Chaos Emulator — Milestone 1
+# Network Latency & Packet-Loss Chaos Emulator
 
 A software-only network chaos engine: intercepts IP packets via a Linux
 TUN virtual interface, applies configurable packet loss and delay/jitter
