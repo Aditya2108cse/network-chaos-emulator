@@ -1,0 +1,23 @@
+{
+  "interface": {
+    "name": "tun0",
+    "local_ip": "10.8.0.1"
+  },
+  "loss": {
+    "model": "gilbert-elliott",
+    "p_good_to_bad": 0.02,
+    "p_bad_to_good": 0.30,
+    "loss_in_good": 0.0,
+    "loss_in_bad": 0.6
+  },
+  "delay": {
+    "model": "correlated-jitter",
+    "base_delay_ms": 50,
+    "jitter_stddev_ms": 10,
+    "alpha": 0.85
+  },
+  "metrics": {
+    "report_interval_sec": 5,
+    "prometheus_export_path": "/tmp/chaos_metrics.prom"
+  }
+}

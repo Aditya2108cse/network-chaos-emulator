@@ -1,0 +1,11 @@
+chaos_emulator
+test_models
+chaos_report.txt
+*.o
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+.vscode/
+.idea/
