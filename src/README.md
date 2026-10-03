@@ -5,12 +5,6 @@
 > constraints, and packet reordering through a virtual TUN network
 > interface.**
 
-![Language](https://img.shields.io/badge/C%2B%2B-17-blue)
-![Platform](https://img.shields.io/badge/Platform-Linux-orange)
-![Network](https://img.shields.io/badge/Network-TUN%2FIP-green)
-![Build](https://img.shields.io/badge/Build-CMake%20%2F%20g%2B%2B-lightgrey)
-![Status](https://img.shields.io/badge/Status-Working-success)
-
 ## 1. Project Overview
 
 The **Network Latency & Packet-Loss Chaos Emulator** is a systems and
