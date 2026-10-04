@@ -157,104 +157,51 @@ network-chaos-emulator/
   Git/GitHub                  Version control
 
 ------------------------------------------------------------------------
+## 5. How to Clone, Build, and Run
 
-# 5. How to Clone, Build, and Run
+### Terminal 1
 
-The recommended demonstration uses **two WSL/Ubuntu terminals**.
-
-## Terminal 1 --- Clone, Build, and Start the Emulator
-
-If an old copy exists and you want a fresh copy from GitHub:
-
-``` bash
+```bash
 cd ~
 rm -rf network-chaos-emulator
 git clone https://github.com/Aditya2108cse/network-chaos-emulator.git
 cd ~/network-chaos-emulator
-```
 
-Install the required build tools if necessary:
-
-``` bash
-sudo apt update
-sudo apt install -y build-essential cmake
-```
-
-### Build using CMake
-
-``` bash
-rm -rf build
-mkdir build
-cd build
-cmake ..
-cmake --build . -j$(nproc)
-```
-
-Start the emulator:
-
-``` bash
-sudo ./chaos_emulator
-```
-
-For the current project configuration, the emulator starts the TUN
-interface and runs a two-phase experiment:
-
-``` text
-TUN interface tun0 up at 10.8.0.1
-Phase 1/2: BASELINE (30s) -- chaos disabled, generate traffic now
-Phase 2/2: CHAOS (30s) -- impairment active, keep sending traffic
-```
-
-Keep Terminal 1 running during the experiment.
-
-------------------------------------------------------------------------
-
-## Terminal 2 --- Generate Test Traffic
-
-Open a second WSL/Ubuntu terminal and run:
-
-``` bash
-for i in $(seq 1 600); do ping -c 1 -W 1 10.8.0.2 > /dev/null; done
-```
-
-This generates ICMP traffic while the emulator is running.
-
-The traffic is used to observe the difference between the baseline and
-impaired phases.
-
-------------------------------------------------------------------------
-
-## 6. Direct g++ Build
-
-If you prefer to compile without CMake, run from the repository root:
-
-``` bash
-cd ~/network-chaos-emulator
-
+Build:
 g++ -std=c++17 -Wall -Wextra -O2 -Isrc \
-src/main.cpp \
-src/net/TunInterface.cpp \
-src/net/PacketParser.cpp \
-src/chaos/LossModel.cpp \
-src/chaos/DelayJitterModel.cpp \
-src/chaos/TokenBucket.cpp \
-src/scheduler/DelayQueue.cpp \
-src/metrics/MetricsCollector.cpp \
-src/metrics/SystemMonitor.cpp \
-src/report/ReportGenerator.cpp \
-src/engine/ChaosEngine.cpp \
+src/main.cpp src/net/TunInterface.cpp src/net/PacketParser.cpp \
+src/chaos/LossModel.cpp src/chaos/DelayJitterModel.cpp \
+src/chaos/TokenBucket.cpp src/scheduler/DelayQueue.cpp \
+src/metrics/MetricsCollector.cpp src/metrics/SystemMonitor.cpp \
+src/report/ReportGenerator.cpp src/engine/ChaosEngine.cpp \
 -o chaos_emulator -lpthread
-```
 
-Then start it:
+Run:
+sudo ./chaos_emulator \
+--dev tun0 \
+--ip 10.8.0.1 \
+--duration 60 \
+--protocol icmp \
+--latency-ms 100 \
+--jitter-ms 20 \
+--loss-p 5 \
+--bandwidth-mbps 10
 
-``` bash
-sudo ./chaos_emulator
-```
+Terminal 2
+Open another WSL/Ubuntu terminal:
+for i in $(seq 1 600); do ping -c 1 -W 1 10.8.0.2 > /dev/null; done
+
+View Report
+After the experiment finishes:
+cat ~/network-chaos-emulator/chaos_report.txt
+
+Run Again
+cd ~/network-chaos-emulator
+git pull
 
 ------------------------------------------------------------------------
 
-## 7. Running a Configured Experiment
+## 6. Running a Configured Experiment
 
 A configured experiment can use parameters such as:
 
