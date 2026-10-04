@@ -161,22 +161,40 @@ network-chaos-emulator/
 
 ### Terminal 1
 
+Clone the project from GitHub:
+
 ```bash
 cd ~
 rm -rf network-chaos-emulator
 git clone https://github.com/Aditya2108cse/network-chaos-emulator.git
 cd ~/network-chaos-emulator
+```
 
-Build:
+Build the project:
+
+```bash
+rm -rf build
+mkdir build
+cd build
+
 g++ -std=c++17 -Wall -Wextra -O2 -Isrc \
-src/main.cpp src/net/TunInterface.cpp src/net/PacketParser.cpp \
-src/chaos/LossModel.cpp src/chaos/DelayJitterModel.cpp \
-src/chaos/TokenBucket.cpp src/scheduler/DelayQueue.cpp \
-src/metrics/MetricsCollector.cpp src/metrics/SystemMonitor.cpp \
-src/report/ReportGenerator.cpp src/engine/ChaosEngine.cpp \
+../src/main.cpp \
+../src/net/TunInterface.cpp \
+../src/net/PacketParser.cpp \
+../src/chaos/LossModel.cpp \
+../src/chaos/DelayJitterModel.cpp \
+../src/chaos/TokenBucket.cpp \
+../src/scheduler/DelayQueue.cpp \
+../src/metrics/MetricsCollector.cpp \
+../src/metrics/SystemMonitor.cpp \
+../src/report/ReportGenerator.cpp \
+../src/engine/ChaosEngine.cpp \
 -o chaos_emulator -lpthread
+```
 
-Run:
+Run the emulator:
+
+```bash
 sudo ./chaos_emulator \
 --dev tun0 \
 --ip 10.8.0.1 \
@@ -186,19 +204,32 @@ sudo ./chaos_emulator \
 --jitter-ms 20 \
 --loss-p 5 \
 --bandwidth-mbps 10
+```
 
-Terminal 2
-Open another WSL/Ubuntu terminal:
+### Terminal 2
+
+Open another WSL/Ubuntu terminal and generate ICMP traffic:
+
+```bash
 for i in $(seq 1 600); do ping -c 1 -W 1 10.8.0.2 > /dev/null; done
+```
 
-View Report
+### View Report
+
 After the experiment finishes:
-cat ~/network-chaos-emulator/chaos_report.txt
 
-Run Again
+```bash
+cat ~/network-chaos-emulator/build/chaos_report.txt
+```
+
+### Run Again
+
+```bash
 cd ~/network-chaos-emulator
 git pull
+```
 
+Then rebuild and run the project using the commands above.
 ------------------------------------------------------------------------
 
 ## 6. Running a Configured Experiment
