@@ -229,7 +229,6 @@ cd ~/network-chaos-emulator
 git pull
 ```
 
-Then rebuild and run the project using the commands above.
 ------------------------------------------------------------------------
 
 ## 6. Running a Configured Experiment
